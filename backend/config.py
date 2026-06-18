@@ -5,7 +5,7 @@ import os
 load_dotenv()
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-DEFAULT_DB_PATH = os.path.join(os.path.dirname(BASE_DIR), "database", "interviewai.db")
+DEFAULT_DB_PATH = os.path.join(BASE_DIR, "interviewai.db")
 
 
 class Settings:
