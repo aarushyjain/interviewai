@@ -1,10 +1,14 @@
+import { FcGoogle } from "react-icons/fc";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { auth } from "../lib/firebase";
 import { useAuth } from "../hooks/useAuth";
 
 export function Login() {
   const { login } = useAuth();
   const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -14,6 +18,7 @@ export function Login() {
     e.preventDefault();
     setError(null);
     setLoading(true);
+
     try {
       await login(email, password);
       navigate("/");
@@ -24,6 +29,25 @@ export function Login() {
     }
   };
 
+  const handleGoogleLogin = async () => {
+    try {
+      setError(null);
+
+      const provider = new GoogleAuthProvider();
+
+      const result = await signInWithPopup(auth, provider);
+
+      console.log("Google User:", result.user);
+
+      alert(`Welcome ${result.user.displayName}`);
+
+      navigate("/");
+    } catch (err: any) {
+      console.error(err);
+      setError("Google login failed");
+    }
+  };
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-[var(--color-bg)] px-4">
       <div className="w-full max-w-sm">
@@ -31,18 +55,42 @@ export function Login() {
           <div className="h-8 w-8 rounded-md bg-[var(--color-primary)] flex items-center justify-center text-[var(--color-bg)] font-bold text-sm">
             IA
           </div>
-          <span className="font-semibold text-lg tracking-tight">InterviewAI</span>
+          <span className="font-semibold text-lg tracking-tight">
+            InterviewAI
+          </span>
         </div>
 
         <div className="card p-6">
           <h1 className="text-lg font-semibold mb-1">Sign in</h1>
+
           <p className="text-sm text-[var(--color-text-secondary)] mb-5">
             Welcome back. Continue your interview prep.
           </p>
 
+          {/* Google Sign In */}
+          <button
+            type="button"
+            onClick={handleGoogleLogin}
+            className="w-full rounded-md border border-[var(--color-border)] py-2 text-sm font-medium hover:bg-white/5 transition mb-4 flex items-center justify-center gap-2"
+          >
+            <FcGoogle size={20} />
+            Continue with Google
+          </button>
+
+          <div className="flex items-center gap-2 mb-4">
+            <div className="h-px flex-1 bg-[var(--color-border)]" />
+            <span className="text-xs text-[var(--color-text-secondary)]">
+              OR
+            </span>
+            <div className="h-px flex-1 bg-[var(--color-border)]" />
+          </div>
+
           <form onSubmit={handleSubmit} className="flex flex-col gap-3">
             <div>
-              <label className="text-xs text-[var(--color-text-secondary)] mb-1 block">Email</label>
+              <label className="text-xs text-[var(--color-text-secondary)] mb-1 block">
+                Email
+              </label>
+
               <input
                 type="email"
                 required
@@ -51,8 +99,12 @@ export function Login() {
                 className="w-full rounded-md border border-[var(--color-border)] bg-[var(--color-bg)] px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-[var(--color-primary)]"
               />
             </div>
+
             <div>
-              <label className="text-xs text-[var(--color-text-secondary)] mb-1 block">Password</label>
+              <label className="text-xs text-[var(--color-text-secondary)] mb-1 block">
+                Password
+              </label>
+
               <input
                 type="password"
                 required
@@ -62,7 +114,11 @@ export function Login() {
               />
             </div>
 
-            {error && <p className="text-xs text-[var(--color-danger)]">{error}</p>}
+            {error && (
+              <p className="text-xs text-[var(--color-danger)]">
+                {error}
+              </p>
+            )}
 
             <button
               type="submit"
@@ -76,7 +132,10 @@ export function Login() {
 
         <p className="text-center text-sm text-[var(--color-text-secondary)] mt-4">
           Don't have an account?{" "}
-          <Link to="/register" className="text-[var(--color-primary)] hover:underline">
+          <Link
+            to="/register"
+            className="text-[var(--color-primary)] hover:underline"
+          >
             Sign up
           </Link>
         </p>
