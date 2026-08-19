@@ -19,8 +19,8 @@ interviewai-analytics/
 │   ├── models/               # ORM models (user, resume, interview, evaluation, analytics)
 │   ├── schemas/               # Pydantic request/response models
 │   ├── routes/                # API endpoints (auth, resume, interview, analytics, coach)
-│   ├── services/               # business logic (auth, resume parsing, claude client, question bank)
-│   ├── agents/                  # Claude-powered agents (question, evaluation, coach)
+│   ├── services/               # business logic (auth, resume parsing, Gemini client, question bank)
+│   ├── agents/                  # Gemini-powered agents (question, evaluation, coach)
 │   ├── analytics/                # pandas-based aggregation (dashboard, heatmap, skill gaps)
 │   └── requirements.txt
 ├── frontend/
@@ -63,9 +63,9 @@ The frontend runs at `http://localhost:5173` and is configured (via `.env`) to t
 ## Core Features
 
 1. **Auth** — register/login/JWT, edit profile (target role, experience level)
-2. **Resume Upload** — PDF upload, Claude-based extraction of skills/projects/experience
+2. **Resume Upload** — PDF upload, Gemini-based extraction of skills/projects/experience
 3. **AI Question Generator** — 40-question curated bank across 6 domains (AI/ML, Backend, DSA, DBMS, OOP, System Design), with resume-based domain suggestion and repeat-avoidance
-4. **AI Evaluation Engine** — Claude scores answers on accuracy, depth, clarity, structure → weighted overall score + feedback, suggestions, missing concepts
+4. **AI Evaluation Engine** — Gemini scores answers on accuracy, depth, clarity, structure → weighted overall score + feedback, suggestions, missing concepts
 5. **Analytics Dashboard** — readiness score, weekly trends, domain performance, skill distribution radar, GitHub-style activity heatmap
 6. **Skill Gap Analysis** — auto-classifies domains as strong/moderate/weak based on rolling averages
 7. **AI Coach** — personalized focus areas and study recommendations based on skill gaps + recent feedback
